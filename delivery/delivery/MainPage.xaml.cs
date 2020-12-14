@@ -1,0 +1,185 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Xamarin.Forms;
+
+namespace delivery
+{
+    public partial class MainPage : ContentPage
+    {
+
+        public class MyItem
+        {
+            public string Name { get; set; }
+            public string Description { get; set; }
+            public ImageSource PicPath { get; set; }
+            public bool Flag { get; set; } = true;
+
+
+
+        }
+        public List<MyItem> list { get; set; }
+
+
+
+        public MainPage()
+        {
+            InitializeComponent();
+            list = new List<MyItem>
+            {
+
+                new MyItem
+                {
+                    Name = "Item 1",
+                    Description = "Какое то описание первого айтема",
+                    PicPath = "shrek.jpg"
+                },
+
+                new MyItem
+                {
+                    Name = "Item 2",
+                    Description = "А тут типа описание второго ну",
+                    PicPath = "shrek.jpg"
+                },
+
+                new MyItem
+                {
+                    Name = "Item 3",
+                    Description = "Не сложно догадаться что тут третьего",
+                    PicPath = "shrek.jpg"
+                },
+
+                new MyItem
+                {
+                    Name = "Item 4",
+                    Description = "Ну и последний, можно еще добавить",
+                    PicPath = "shrek.jpg"
+                },
+
+
+                new MyItem
+                {
+                    Name = "Item 4",
+                    Description = "Ну и последний, можно еще добавить",
+                    PicPath = "shrek.jpg"
+                },
+
+
+
+                new MyItem
+                {
+                    Name = "Item 4",
+                    Description = "Ну и последний, можно еще добавить",
+                    PicPath = "shrek.jpg"
+                },
+
+
+                new MyItem
+                {
+                    Name = "Item 4",
+                    Description = "Ну и последний, можно еще добавить",
+                    PicPath = "shrek.jpg"
+                },
+
+
+                new MyItem
+                {
+                    Name = "Item 4",
+                    Description = "Ну и последний, можно еще добавить",
+                    PicPath = "shrek.jpg"
+                },
+
+
+                new MyItem
+                {
+                    Name = "Item 4",
+                    Description = "Ну и последний, можно еще добавить",
+                    PicPath = "shrek.jpg"
+                },
+
+
+
+                new MyItem
+                {
+                    Name = "Item 4",
+                    Description = "Ну и последний, можно еще добавить",
+                    PicPath = "shrek.jpg"
+                },
+
+
+                new MyItem
+                {
+                    Name = "Item 4",
+                    Description = "Ну и последний, можно еще добавить",
+                    PicPath = "shrek.jpg"
+                },
+
+
+
+                new MyItem
+                {
+                    Name = "Item 4",
+                    Description = "Ну и последний, можно еще добавить",
+                    PicPath = "shrek.jpg"
+                },
+
+
+
+                new MyItem
+                {
+                    Name = "Item 4",
+                    Description = "Ну и последний, можно еще добавитьeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+                    PicPath = "shrek.jpg"
+                },
+
+
+
+                new MyItem
+                {
+                    Name = "Item 4",
+                    Description = "Ну и последний, можно еще добавить",
+                    PicPath = "shrek.jpg"
+                }
+            };
+            BindingContext = this;
+
+
+        }
+
+
+
+
+        private void clickPush(object sender, EventArgs e)
+        {
+
+            var button = sender as Button;
+            button.IsEnabled = false;
+            list.Find(x => x.Name.Contains(button.CommandParameter.ToString())).Flag = false;
+            Cart.cart[button.CommandParameter.ToString()] = new Cart.itemCart
+            {
+                Name = button.CommandParameter.ToString(),
+                PicPath = list.Find(x => x.Name.Contains(button.CommandParameter.ToString())).PicPath,
+                Description = list.Find(x => x.Name.Contains(button.CommandParameter.ToString())).Description.ToString(),
+            };
+        }
+
+
+        private void goCart(object sender, EventArgs e)
+        {
+
+            var button = sender as Button;
+            button.IsEnabled = false;
+     
+            Page cart = new Cart();
+
+            Navigation.PushAsync(cart);
+
+            cart.Disappearing += (send, ev) => button.IsEnabled = true;
+            cart.Disappearing += (send, ev) => itemList.ItemsSource = list;
+
+        }
+    }
+}

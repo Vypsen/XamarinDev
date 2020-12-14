@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="delivery.Cart">
+
+    <StackLayout>
+        <ListView x:Name="cartList">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell >
+                        <StackLayout Orientation="Horizontal" Margin="3">
+                            <Label Text="{Binding Name}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Medium" TextColor="Black"/>
+                            <Label Text="{Binding count}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Medium" TextColor="Black"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <!--<Button VerticalOptions="EndAndExpand" Text="Заказать" Clicked="Button_Clicked" BackgroundColor="Green"/>-->
+
+    </StackLayout>
+    
+</ContentPage>
