@@ -4,20 +4,28 @@
              x:Class="delivery.Cart">
 
     <StackLayout>
-        <ListView x:Name="cartList">
+        <ListView x:Name="cartList"  HasUnevenRows="True">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell >
-                        <StackLayout Orientation="Horizontal" Margin="3">
-                            <Label Text="{Binding Name}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Medium" TextColor="Black"/>
-                            <Label Text="{Binding count}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Medium" TextColor="Black"/>
+                    <ViewCell Height="170.0">
+                        <StackLayout Orientation="Vertical" Margin="10.0">
+                            <StackLayout Orientation="Horizontal" Spacing="10.0">
+                                <Image HeightRequest="70.0" WidthRequest="80.0" Source="{Binding PicPath}"/>
+                                <StackLayout Spacing="10.0">
+                                    <Label FontAttributes="Bold" Text="{Binding Name}" FontSize="15.0" TextColor="Black" />
+                                    <Label Text="{Binding Description}" FontSize="10.0"/>
+                                </StackLayout>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label x:Name="count" Text="Stepper" FontSize="Large" />
+                                <Stepper ValueChanged="Stepper_ValueChanged"/>
+                            </StackLayout>
+
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <!--<Button VerticalOptions="EndAndExpand" Text="Заказать" Clicked="Button_Clicked" BackgroundColor="Green"/>-->
-
     </StackLayout>
     
 </ContentPage>

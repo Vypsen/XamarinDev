@@ -42,7 +42,7 @@ namespace delivery
                 {
                     Name = "Item 2",
                     Description = "А тут типа описание второго ну",
-                    PicPath = "shrek.jpg"
+                    PicPath = "rickardo.jpg"
                 },
 
                 new MyItem

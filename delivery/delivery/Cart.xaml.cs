@@ -34,5 +34,13 @@ namespace delivery
             cartList.ItemsSource = cart.Select((a) => { return a.Value; }).ToList();
 
         }
+
+
+        
+        private void Stepper_ValueChanged(object sender, ValueChangedEventArgs e)
+        {
+           
+                count.Text = e.NewValue.ToString();
+        }
     }
 }
