@@ -18,10 +18,8 @@ namespace delivery
             public ImageSource PicPath { get; set; }
             public bool Flag { get; set; } = true;
 
-
-
         }
-        public List<MyItem> list { get; set; }
+        public static List<MyItem> list { get; set; }
 
 
 
@@ -142,9 +140,24 @@ namespace delivery
                     Name = "Item 4",
                     Description = "Ну и последний, можно еще добавить",
                     PicPath = "shrek.jpg"
-                }
+                },
+
+                 new MyItem
+                 {
+                    Name = "Item 5",
+                    Description = "Ну и последний, можно ",
+                    PicPath = "shrek.jpg"
+                 },
+
+                 new MyItem
+                 {
+                    Name = "Item 6",
+                    Description = "Ну и последний, можно еще ",
+                    PicPath = "shrek.jpg"
+                 }
+
             };
-            BindingContext = this;
+            itemList.ItemsSource = list;
 
 
         }
@@ -154,15 +167,17 @@ namespace delivery
 
         private void clickPush(object sender, EventArgs e)
         {
-
+                
             var button = sender as Button;
+
             button.IsEnabled = false;
             list.Find(x => x.Name.Contains(button.CommandParameter.ToString())).Flag = false;
             Cart.cart[button.CommandParameter.ToString()] = new Cart.itemCart
             {
                 Name = button.CommandParameter.ToString(),
-                PicPath = list.Find(x => x.Name.Contains(button.CommandParameter.ToString())).PicPath,
                 Description = list.Find(x => x.Name.Contains(button.CommandParameter.ToString())).Description.ToString(),
+                PicPath = list.Find(x => x.Name.Contains(button.CommandParameter.ToString())).PicPath,
+                count = 1
             };
         }
 
@@ -178,8 +193,10 @@ namespace delivery
             Navigation.PushAsync(cart);
 
             cart.Disappearing += (send, ev) => button.IsEnabled = true;
+            cart.Disappearing += (send, ev) => itemList.ItemsSource = null; 
             cart.Disappearing += (send, ev) => itemList.ItemsSource = list;
 
         }
+
     }
 }

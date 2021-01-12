@@ -4,7 +4,8 @@
              x:Class="delivery.Cart">
 
     <StackLayout>
-        <ListView x:Name="cartList"  HasUnevenRows="True">
+        <ScrollView>
+            <ListView x:Name="cartList"  HasUnevenRows="True">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell Height="170.0">
@@ -12,20 +13,27 @@
                             <StackLayout Orientation="Horizontal" Spacing="10.0">
                                 <Image HeightRequest="70.0" WidthRequest="80.0" Source="{Binding PicPath}"/>
                                 <StackLayout Spacing="10.0">
-                                    <Label FontAttributes="Bold" Text="{Binding Name}" FontSize="15.0" TextColor="Black" />
-                                    <Label Text="{Binding Description}" FontSize="10.0"/>
+                                    <Label FontAttributes="Bold" Text="{Binding Name}" FontSize="20.0" TextColor="Black" />
+                                    <Label Text="{Binding Description}" FontSize="15.0"/>
                                 </StackLayout>
                             </StackLayout>
                             <StackLayout Orientation="Horizontal">
-                                <Label x:Name="count" Text="Stepper" FontSize="Large" />
-                                <Stepper ValueChanged="Stepper_ValueChanged"/>
+                                <Entry ReturnCommandParameter="{Binding Name}"
+                                       Text="{Binding count}"
+                                       HorizontalTextAlignment="Center" WidthRequest="70.0" 
+                                       Completed="count_Completed"  
+                                       TextChanged="Entry_TextChanged"
+                                       />
+                                <Label x:Name="textLabel" FontSize="Large" TextColor="Black" Text="Введите кол-во"/>
+                                <Button x:Name="delete" Text="Х" FontSize="Large" BorderWidth="1"  Clicked="delete_Clicked"  CommandParameter="{Binding Name}"/>
                             </StackLayout>
-
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        </ScrollView>
+        <Button x:Name="order" Text="order" BorderWidth="1"  Clicked="order_Clicked" />
     </StackLayout>
     
 </ContentPage>

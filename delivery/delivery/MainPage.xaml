@@ -16,10 +16,10 @@
 
     <StackLayout BackgroundColor="White">
         <ScrollView>
-            <ListView x:Name="itemList" HasUnevenRows="True" ItemsSource="{Binding list}" >
+            <ListView x:Name="itemList" HasUnevenRows="True"> 
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell Height="170.0" >
+                        <ViewCell Height="170.0">
                             <StackLayout Orientation="Horizontal" Spacing="20.0" Margin="10.0">
                                 <Image HeightRequest="120.0" WidthRequest="150.0" Source="{Binding PicPath}"/>
                                 <StackLayout Margin="10.0">
@@ -28,7 +28,6 @@
                                     <Button TextColor="Black"
                                                 BorderWidth="1.0"
                                                 BorderColor="Black"
-                                                BackgroundColor="White"
                                                 HeightRequest="40.0" WidthRequest="80"
                                                 Text="Push" Clicked ="clickPush"
                                                 CommandParameter="{Binding Name}"
@@ -45,6 +44,7 @@
     </StackLayout>
 </ContentPage>
 
+    
 
 
 
