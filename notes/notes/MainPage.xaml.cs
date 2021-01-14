@@ -49,7 +49,7 @@ namespace notes
                         Text = info["text"].ToString(),
                         Date = info["data"].ToString(),
                         Id = (int)info["id"]
-                    }); ;   
+                    });    
                 
                 }
 
