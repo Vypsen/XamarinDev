@@ -1,0 +1,14 @@
+C:\Users\1\Desktop\xamarin\weather\weather\obj\Debug\netstandard2.0\weather.csprojAssemblyReference.cache
+C:\Users\1\Desktop\xamarin\weather\weather\obj\Debug\netstandard2.0\App.xaml.g.cs
+C:\Users\1\Desktop\xamarin\weather\weather\obj\Debug\netstandard2.0\MainPage.xaml.g.cs
+C:\Users\1\Desktop\xamarin\weather\weather\obj\Debug\netstandard2.0\weather.AssemblyInfoInputs.cache
+C:\Users\1\Desktop\xamarin\weather\weather\obj\Debug\netstandard2.0\weather.AssemblyInfo.cs
+C:\Users\1\Desktop\xamarin\weather\weather\obj\Debug\netstandard2.0\weather.csproj.CoreCompileInputs.cache
+C:\Users\1\Desktop\xamarin\weather\weather\bin\Debug\netstandard2.0\weather.deps.json
+C:\Users\1\Desktop\xamarin\weather\weather\bin\Debug\netstandard2.0\weather.dll
+C:\Users\1\Desktop\xamarin\weather\weather\bin\Debug\netstandard2.0\ref\weather.dll
+C:\Users\1\Desktop\xamarin\weather\weather\bin\Debug\netstandard2.0\weather.pdb
+C:\Users\1\Desktop\xamarin\weather\weather\obj\Debug\netstandard2.0\XamlC.stamp
+C:\Users\1\Desktop\xamarin\weather\weather\obj\Debug\netstandard2.0\weather.dll
+C:\Users\1\Desktop\xamarin\weather\weather\obj\Debug\netstandard2.0\ref\weather.dll
+C:\Users\1\Desktop\xamarin\weather\weather\obj\Debug\netstandard2.0\weather.pdb
