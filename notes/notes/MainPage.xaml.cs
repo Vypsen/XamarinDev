@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
 using System.IO;
 
 namespace notes
@@ -31,7 +24,6 @@ namespace notes
 
         public MainPage()
         {
-
             InitializeComponent();
 
             var file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "jsonResult.json");
@@ -39,7 +31,7 @@ namespace notes
             if (File.Exists(file))
             {
                 JObject Notes = JObject.Parse(File.ReadAllText(file));
-                foreach(JObject i in Notes["notes"])
+                foreach (JObject i in Notes["notes"])
                 {
                     var info = i["note"];
                     Console.WriteLine(i);
@@ -49,16 +41,12 @@ namespace notes
                         Text = info["text"].ToString(),
                         Date = info["data"].ToString(),
                         Id = (int)info["id"]
-                    });    
-                
+                    });
+
                 }
+            }
 
-                rebild();
-            }            
-
-
-            BindableLayout.SetItemsSource(Col1, Instance.marks1);
-            BindableLayout.SetItemsSource(Col2, Instance.marks2);
+            rebild();    
         }
 
         private void Button_Clicked(object sender, EventArgs e)
@@ -77,7 +65,7 @@ namespace notes
             };
         }
 
-        private void rebild()
+        public void rebild()
         {
 
 
@@ -120,12 +108,16 @@ namespace notes
                 string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "jsonResult.json");
                 File.WriteAllText(file, arrayJson.ToString());
 
+                BindableLayout.SetItemsSource(Col1, Instance.marks1);
+                BindableLayout.SetItemsSource(Col2, Instance.marks2);
+
+
 
 
             }
-            
 
- 
+
+
         }
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)

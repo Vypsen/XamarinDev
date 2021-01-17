@@ -1,6 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace notes
 {
@@ -10,6 +11,7 @@ namespace notes
         {
             InitializeComponent();
 
+     
             MainPage = new NavigationPage(new MainPage());
         }
 
@@ -19,10 +21,13 @@ namespace notes
 
         protected override void OnSleep()
         {
+            Instance.pool.Clear();
         }
 
         protected override void OnResume()
         {
         }
+
     }
 }
+
