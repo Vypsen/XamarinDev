@@ -6,7 +6,7 @@
 
     <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
 
-        <Image Source="jopa.jpg" x:Name="backImg" AbsoluteLayout.LayoutBounds="1,1,1,1" AbsoluteLayout.LayoutFlags="All" Aspect="AspectFill"/>
+        <Image x:Name="backImg" AbsoluteLayout.LayoutBounds="1,1,1,1" AbsoluteLayout.LayoutFlags="All" Aspect="AspectFill"/>
         <StackLayout Spacing="15.0" x:Name="weather" AbsoluteLayout.LayoutBounds="1,1,1,1" AbsoluteLayout.LayoutFlags="All" BackgroundColor="Transparent">
 
             <StackLayout.GestureRecognizers>
@@ -18,14 +18,17 @@
             <Entry x:Name="CitySearch"  HorizontalTextAlignment="Center"  Completed="CitySearch_Completed"  HeightRequest="50.0" FontSize="20.0"  Margin="0.0" Placeholder="Название города"/>
 
 
-            <Label Text="-" x:Name="cityLabel" HorizontalOptions="Fill" HorizontalTextAlignment="Center" FontSize="30.0"  TextColor="Black"/>
+            <StackLayout Orientation="Vertical" Spacing="5.0" HorizontalOptions="Start" Padding="15.0, 0.0, 0.0, 0.0">
+                <Label x:Name="cityLabel" HorizontalOptions="Fill" FontSize="30.0"  TextColor="Black"/>
+                <Label x:Name="dateTime" HorizontalOptions="Fill"  FontSize="12.0"  TextColor="Black"/>
+            </StackLayout>
             <StackLayout Orientation="Horizontal" Spacing="20.0" >
-                <StackLayout Orientation="Horizontal" Spacing="0.0" VerticalOptions="Center" WidthRequest="250.0">
+                <StackLayout Orientation="Horizontal" VerticalOptions="Center" WidthRequest="250.0">
                     <Image x:Name="iconWeather" HeightRequest="100.0" WidthRequest="100.0" VerticalOptions="Center" />
-                    <Label Text="-" x:Name="tempLabel" HorizontalOptions="Fill"  VerticalTextAlignment="Center" FontSize="40.0"  TextColor="Black"/>
+                    <Label x:Name="tempLabel" HorizontalOptions="Fill"  VerticalTextAlignment="Center" FontSize="40.0"  TextColor="Black"/>
                 </StackLayout>
                 <StackLayout Orientation="Vertical" Spacing="5.0"  VerticalOptions="Center" >
-                    <Label Text="-" x:Name="weatherDescriptionLabel" HorizontalOptions="Fill" HorizontalTextAlignment="Center"  VerticalTextAlignment="Center" FontSize="15.0" TextColor="Black"/>
+                    <Label x:Name="descriptionLabel" HorizontalOptions="Fill" HorizontalTextAlignment="Center"  VerticalTextAlignment="Center" FontSize="15.0" TextColor="Black"/>
                     <Label x:Name="minMaxTemp" HorizontalOptions="Fill" HorizontalTextAlignment="Center" FontSize="15.0" TextColor="Black"/>
                 </StackLayout>
 
@@ -35,8 +38,6 @@
             <Label Text="Скорость ветра: -" x:Name="windSpeedLabel" HorizontalOptions="Fill" HorizontalTextAlignment="Start" FontSize="20.0" Margin="10.0, 0.0, 0.0, 0.0" TextColor="Black"/>
             <Label Text="Атм. давление: -" x:Name="pressureLabel" HorizontalOptions="Fill" HorizontalTextAlignment="Start" FontSize="20.0" Margin="10.0, 0.0, 0.0, 0.0" TextColor="Black"/>
             <Label Text="Влажность: -" x:Name="humidityLabel" HorizontalOptions="Fill" HorizontalTextAlignment="Start" FontSize="20.0" Margin="10.0, 0.0, 0.0, 0.0" TextColor="Black"/>
-            <Label  x:Name="status" VerticalOptions="EndAndExpand" Text="Прямо сейчас"  TextColor="Black"/>
-        
 
         </StackLayout>
     </AbsoluteLayout>

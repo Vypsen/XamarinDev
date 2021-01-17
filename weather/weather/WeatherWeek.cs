@@ -4,7 +4,7 @@ using System.Text;
 
 namespace weather
 {
-    public class WeatherFor7Days
+    public class WeatherWeek
     {
         public WeatherForDay[] daily { get; set; }
     }
@@ -17,6 +17,7 @@ namespace weather
         public float pressure { get; set; }
         public int humidity { get; set; }
         public float wind_speed { get; set; }
+        public int dt { get; set; }
         public WeatherForDayWeather[] weather { get; set; }
     }
 

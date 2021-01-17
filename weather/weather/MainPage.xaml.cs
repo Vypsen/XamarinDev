@@ -4,17 +4,22 @@ using System.IO;
 using System.Net;
 using Xamarin.Forms;
 using Xamarin.Essentials;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace weather
 {
     public partial class MainPage : ContentPage
     {
-        static WeatherInfo weatherInfo = new WeatherInfo();
-        static WeatherFor7Days weatherFor7Days = new WeatherFor7Days();
-        static double lat;
-        static double lon;
-        static int currentDayCounter = -1;
-        static bool requestAccepted = false;
+        WeatherCurrent weatherCurrent = new WeatherCurrent();
+        WeatherWeek weatherWeek = new WeatherWeek();
+        double lat;
+        double lon;
+        string icon;
+        int currentDay = -1;
+        string url;
+        string response;
+        bool requestAccepted = false;
         
         public MainPage()
         {
@@ -23,39 +28,38 @@ namespace weather
             getGeo();
         }
 
-
-
-        
-
         async void getGeo()
         {
-            double lat;
-            double lon;
+            try
+            {
+                var CurrentLocation = await Geolocation.GetLocationAsync(new GeolocationRequest(GeolocationAccuracy.Default, TimeSpan.FromSeconds(1)));
 
-            var result = await Geolocation.GetLocationAsync(new GeolocationRequest(GeolocationAccuracy.Default, TimeSpan.FromSeconds(1)));
+                lat = CurrentLocation.Latitude;
+                lon = CurrentLocation.Longitude;
 
-            lat = result.Latitude;
-            lon = result.Longitude;
+                Console.WriteLine(lat);
+                Console.WriteLine(lon);
 
-            Console.WriteLine(lat);
-            Console.WriteLine(lon);
-
-            string geoloc = $"lat={lat}&lon={lon}";
+                var geoloc = $"lat={lat}&lon={lon}";
 
 
-            doRequest(geoloc);
+                GetData(geoloc);
 
-            currentWeather();
+                currentWeather();
+            }
+            catch
+            {
+                
+            }
         }
 
 
-
-        private void doRequest(string geoloc)
+        private void GetData(string geoloc)
         {
             
 
-            string url = $"http://api.openweathermap.org/data/2.5/weather?{geoloc}&units=metric&lang=ru&appid=9225c75831855f6460fb93f2152a5396";
-            string response;
+            url = $"http://api.openweathermap.org/data/2.5/weather?{geoloc}&units=metric&lang=ru&appid=9225c75831855f6460fb93f2152a5396";
+           
 
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
             HttpWebResponse httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse();
@@ -65,10 +69,10 @@ namespace weather
                 response = streamReader.ReadToEnd();
             }
 
-            weatherInfo = JsonConvert.DeserializeObject<WeatherInfo>(response);
+            weatherCurrent = JsonConvert.DeserializeObject<WeatherCurrent>(response);
 
-            lat = weatherInfo.coord.lat;
-            lon = weatherInfo.coord.lon;
+            lat = weatherCurrent.coord.lat;
+            lon = weatherCurrent.coord.lon;
 
             url = $"https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&lang=ru&units=metric&appid=9225c75831855f6460fb93f2152a5396";
 
@@ -80,29 +84,31 @@ namespace weather
                 response = streamReader.ReadToEnd();
             }
 
-            weatherFor7Days = JsonConvert.DeserializeObject<WeatherFor7Days>(response);
+            weatherWeek = JsonConvert.DeserializeObject<WeatherWeek>(response);
         }
 
         private void currentWeather()
         {
 
-            //backImg.Source = getImg(weatherInfo.weather[0].main);
-            backImg.Source = $"{weatherInfo.weather[0].main}.jpg";
-            string icon = weatherInfo.weather[0].icon;
+            backImg.Source = $"{weatherCurrent.weather[0].main}.jpg";
+            icon = weatherCurrent.weather[0].icon;
 
             iconWeather.Source = $"https://openweathermap.org/img/wn/{icon}@2x.png";
 
-            CitySearch.Text = weatherInfo.name;
+            CitySearch.Text = weatherCurrent.name;
             requestAccepted = true;
-            cityLabel.Text = weatherInfo.name;
-            tempLabel.Text = $"{((int)weatherInfo.main.temp)} °C";
-            weatherDescriptionLabel.Text = weatherInfo.weather[0].description;
-            windSpeedLabel.Text = $"Скорость ветра:  { weatherInfo.wind.speed} м/с";
-            humidityLabel.Text = $"Влажность:  {weatherInfo.main.humidity} % ";
-            pressureLabel.Text = $"Атм. давление:  {weatherInfo.main.pressure} мм.рт.ст.";
-            minMaxTemp.Text = $" {(int)weatherFor7Days.daily[0].temp.min} °C / {(int)weatherFor7Days.daily[0].temp.max} °C";
-           
-   
+            cityLabel.Text = weatherCurrent.name;
+            tempLabel.Text = $"{((int)weatherCurrent.main.temp)} °C";
+            descriptionLabel.Text = weatherCurrent.weather[0].description;
+            windSpeedLabel.Text = $"Скорость ветра:  { weatherCurrent.wind.speed} м/с";
+            humidityLabel.Text = $"Влажность:  {weatherCurrent.main.humidity} % ";
+            pressureLabel.Text = $"Атм. давление:  {weatherCurrent.main.pressure} мм.рт.ст.";
+            minMaxTemp.Text = $" {(int)weatherWeek.daily[0].temp.min} °C / {(int)weatherWeek.daily[0].temp.max} °C";
+
+            var Date = getDateTime(weatherCurrent.dt).ToString();
+            dateTime.Text = Date.Substring(0, Date.Length - 3);
+
+
         }
 
         private void CitySearch_Completed(object sender, EventArgs e)
@@ -110,8 +116,8 @@ namespace weather
             Entry entry = sender as Entry;
             try
             {
-
-                doRequest($"q={entry.Text}");
+                entry.Text = entry.Text.Trim(' ');
+                GetData($"q={entry.Text}");
                 requestAccepted = true;
                 currentWeather();
             }
@@ -127,57 +133,40 @@ namespace weather
         {
             if (requestAccepted)
             {
-                if (currentDayCounter == -1)
+                if (currentDay == -1)
                 {
                     currentWeather();
                 }
                 else
                 {
-                    //getImg(weatherInfo.weather[0].main);
-                    backImg.Source = $"{weatherFor7Days.daily[currentDayCounter].weather[0].main}.jpg";
+                    backImg.Source = $"{weatherWeek.daily[currentDay].weather[0].main}.jpg";
 
-                    string icon = weatherFor7Days.daily[currentDayCounter].weather[0].icon;
+                    icon = weatherWeek.daily[currentDay].weather[0].icon;
 
                     iconWeather.Source = $"https://openweathermap.org/img/wn/{icon}@2x.png";
 
-                    cityLabel.Text = weatherInfo.name;
-                    tempLabel.Text = $" {((int)weatherFor7Days.daily[currentDayCounter].temp.day)}°C";
-                    weatherDescriptionLabel.Text = weatherFor7Days.daily[currentDayCounter].weather[0].description;
-                    windSpeedLabel.Text = $"Скорость ветра: {weatherFor7Days.daily[currentDayCounter].wind_speed} м/с ";
-                    humidityLabel.Text = $"Влажность: {weatherFor7Days.daily[currentDayCounter].humidity} % ";
-                    pressureLabel.Text = $"Атм. давление: {weatherFor7Days.daily[currentDayCounter].pressure} мм.рт.ст. ";
-                    minMaxTemp.Text = $" {(int)weatherFor7Days.daily[currentDayCounter].temp.min} °C / {(int)weatherFor7Days.daily[currentDayCounter].temp.max} °C";
-                    
+                    cityLabel.Text = weatherCurrent.name;
+                    tempLabel.Text = $" {((int)weatherWeek.daily[currentDay].temp.day)}°C";
+                    descriptionLabel.Text = weatherWeek.daily[currentDay].weather[0].description;    
+                    windSpeedLabel.Text = $"Скорость ветра: {weatherWeek.daily[currentDay].wind_speed} м/с ";
+                    humidityLabel.Text = $"Влажность: {weatherWeek.daily[currentDay].humidity} % ";
+                    pressureLabel.Text = $"Атм. давление: {weatherWeek.daily[currentDay].pressure} мм.рт.ст. ";
+                    minMaxTemp.Text = $" {(int)weatherWeek.daily[currentDay].temp.min} °C / {(int)weatherWeek.daily[currentDay].temp.max} °C";
+
+                    var Date = getDateTime(weatherWeek.daily[currentDay].dt).ToString();
+                    dateTime.Text = Date.Substring(0, Date.Length - 8);
                 }
             }
 
-            switch (currentDayCounter)
-            {
-                case -1:
-                    {
-                        status.Text = "Прямо сейчас";
-                        break;
-                    }
-
-                case 1:
-                    {
-                        status.Text = "Завтра";
-                        break;
-                    }
-
-                case 2:
-                    {
-                        status.Text = "Послезавтра";
-                        break;
-                    }
-
-                default:
-                    {
-                        status.Text = "Другой день";
-                        break;
-                    }
-            }
         }
+
+        private DateTime getDateTime(int UnixTime)
+        {
+
+            return new DateTime(1970, 1, 1, 10, 0, 0).AddSeconds(UnixTime);
+        }
+
+
 
         private void Swiped(object sender, SwipedEventArgs e)
         {
@@ -187,17 +176,15 @@ namespace weather
                 case SwipeDirection.Right:
                     try
                     {
-
-                        
-                        Console.WriteLine(currentDayCounter);
-                        if (currentDayCounter == 1)
+                        Console.WriteLine(currentDay);
+                        if (currentDay == 1)
                         {
-                            currentDayCounter -= 2;
+                            currentDay -= 2;
                         }
 
-                        else if (currentDayCounter != -1)
+                        else if (currentDay != -1)
                         {
-                            currentDayCounter--;
+                            currentDay--;
                         }
                         refreshInfo();
                     }
@@ -212,17 +199,17 @@ namespace weather
                 case SwipeDirection.Left:
                     try
                     {
-                        if (currentDayCounter == -1)
+                        if (currentDay == -1)
                         {
-                            currentDayCounter += 2;
+                            currentDay += 2;
                         }
 
-                        else if (currentDayCounter != 6)
+                        else if (currentDay != 6)
                         {
-                            currentDayCounter++;
+                            currentDay++;
                  
                         }
-                        Console.WriteLine(currentDayCounter);
+                        Console.WriteLine(currentDay);
 
                         refreshInfo();
 
@@ -233,8 +220,7 @@ namespace weather
                     };
 
                     
-                    
-
+                
                     break;
 
             }
